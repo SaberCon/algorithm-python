@@ -1,17 +1,18 @@
 class Solution:
     def __init__(self):
         self.cache = {}
-        self.nums = []
+        self.sub = [0]
 
     def splitArray(self, nums: List[int], m: int) -> int:
-        self.nums = nums
+        for elem in nums:
+            self.sub.append(self.sub[-1] + elem)
         return self.split_array(0, len(nums), m)
 
     def split_array(self, start: int, end: int, count: int) -> int:
         if (start, end, count) in self.cache:
             return self.cache[(start, end, count)]
         if count == 1:
-            ans = sum(self.nums[start:end])
+            ans = self.sub[end] - self.sub[start]
         else:
             ans = 10 ** 9
             for i in range(start + 1, end - count + 2):
