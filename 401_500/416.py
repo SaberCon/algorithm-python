@@ -6,7 +6,7 @@ class Solution:
         target = total // 2
         sum_set = {0}
         for num in nums:
-            sum_set = sum_set + {i + num for i in sum_set}
+            sum_set |= {i + num for i in sum_set}
             if target in sum_set:
                 return True
         return False
