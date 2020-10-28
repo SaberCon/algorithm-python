@@ -7,12 +7,16 @@ class TreeNode:
 
 class Solution:
     def pathSum(self, root: TreeNode, sum: int) -> int:
-        if not root:
-            return 0
-        return self.pathSumFromRoot(root, sum) + self.pathSum(root.left, sum) + self.pathSum(root.right, sum)
+        sum_map = {0: 1}
 
-    def pathSumFromRoot(self, root: TreeNode, sum: int) -> int:
-        if not root:
-            return 0
-        return (root.val == sum) + self.pathSumFromRoot(root.left, sum - root.val) + self.pathSumFromRoot(root.right,
-                                                                                                          sum - root.val)
+        def path_sum(node: TreeNode, curr: int):
+            if not node:
+                return 0
+            curr += node.val
+            ans = sum_map.get(curr - sum) or 0
+            sum_map[curr] = sum_map.setdefault(curr, 0) + 1
+            ans += path_sum(node.left, curr) + path_sum(node.right, curr)
+            sum_map[curr] -= 1
+            return ans
+
+        return path_sum(root, 0)
