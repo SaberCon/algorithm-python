@@ -1,19 +1,14 @@
 class Solution:
     def compress(self, chars: List[str]) -> int:
-        index = 0
-        prev = chars[0]
-        count = 0
+        curr = 0
+        count = 1
         chars.append('end')
-        for c in chars:
-            if prev == c:
+        for i in range(1, len(chars)):
+            if chars[i] == chars[i - 1]:
                 count += 1
             else:
-                chars[index] = prev
-                index += 1
-                if count != 1:
-                    for n in str(count):
-                        chars[index] = n
-                        index += 1
+                for n in chars[i - 1] + (str(count) if count != 1 else ''):
+                    chars[curr] = n
+                    curr += 1
                 count = 1
-                prev = c
-        return index
+        return curr
