@@ -1,3 +1,7 @@
+import math
+
+
 class Solution:
     def poorPigs(self, buckets: int, minutesToDie: int, minutesToTest: int) -> int:
-        times = minutesToTest // minutesToDie
+        states = minutesToTest // minutesToDie + 1
+        return math.ceil(math.log(buckets) / math.log(states))
