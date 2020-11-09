@@ -23,5 +23,3 @@ class Solution:
                 return True
         self.cache[key] = False
         return False
-
-print(sum(range(1,19)))
