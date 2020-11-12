@@ -3,19 +3,19 @@ class Solution:
         perimeter = sum(nums)
         if not perimeter or perimeter % 4 != 0:
             return False
-        lengths = [perimeter // 4] * 4
-        nums.sort(reverse=True)
+        side_length = perimeter // 4
+        memo = set()
 
-        def can_make_square(index):
-            if index == len(nums):
-                return sum(lengths) == 0
-            for i in range(min(index + 1, 4)):
-                if lengths[i] < nums[index]:
-                    continue
-                lengths[i] -= nums[index]
-                if can_make_square(index + 1):
+        def recurse(mask):
+            if mask in memo:
+                return False
+            total = sum(nums[i] for i in range(len(nums)) if not (mask & (1 << i)))
+            if total == side_length * 3:
+                return True
+            for i in range(len(nums)):
+                if mask & (1 << i) and nums[i] <= side_length - total % side_length and recurse(mask ^ (1 << i)):
                     return True
-                lengths[i] += nums[index]
+            memo.add(mask)
             return False
 
-        return can_make_square(0)
+        return recurse((1 << len(nums)) - 1)
