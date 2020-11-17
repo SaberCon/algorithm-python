@@ -2,30 +2,30 @@ class Solution:
 
     def findMinStep(self, board: str, hand: str) -> int:
         cache = {}
-        ball_map = {}
+        ball_in_hand = {}
         for ball in hand:
-            ball_map[ball] = ball_map.get(ball, 0) + 1
+            ball_in_hand[ball] = ball_in_hand.get(ball, 0) + 1
 
-        def find_min_step(curr_board):
-            if curr_board in cache:
-                return cache[curr_board]
-            simplified_board = remove_group(curr_board)
+        def find_min_step(board):
+            if board in cache:
+                return cache[board]
+            simplified_board = remove_group(board)
             if not simplified_board:
                 return 0
-            curr_min_step = len(hand) + 1
-            for ball, count in ball_map.items():
+            min_step = len(hand) + 1
+            for ball, count in ball_in_hand.items():
                 if not count:
                     continue
-                ball_map[ball] -= 1
+                ball_in_hand[ball] -= 1
                 for i in range(len(simplified_board)):
-                    curr_min_step = min(curr_min_step, find_min_step(simplified_board[:i] + simplified_board[i] + simplified_board[i:]) + 1)
-                ball_map[ball] += 1
-            cache[curr_board] = curr_min_step
-            return curr_min_step
+                    min_step = min(min_step, find_min_step(simplified_board[:i] + ball + simplified_board[i:]) + 1)
+                ball_in_hand[ball] += 1
+            cache[board] = min_step
+            return min_step
 
-        def remove_group(curr_board):
+        def remove_group(board):
             stack = []
-            for ball in curr_board + 'E':
+            for ball in board + 'E':
                 if len(stack) > 2 and ball != stack[-1] and stack[-1] == stack[-2] == stack[-3]:
                     removed = stack[-1]
                     while stack and stack[-1] == removed:
@@ -38,4 +38,6 @@ class Solution:
         return min_step if min_step <= len(hand) else -1
 
 
-print(Solution().findMinStep('WWRRBBWW', 'WRBRW'))
+print(Solution().findMinStep('WWRRBBWW', 'WRBRW'))  # 2
+print(Solution().findMinStep('RRWWRRBBRR', 'WB'))  # 2
+print(Solution().findMinStep('RBYYBBRRB', 'YRBGB'))  # 3
