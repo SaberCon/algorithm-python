@@ -36,8 +36,3 @@ class Solution:
 
         min_step = find_min_step(board)
         return min_step if min_step <= len(hand) else -1
-
-
-print(Solution().findMinStep('WWRRBBWW', 'WRBRW'))  # 2
-print(Solution().findMinStep('RRWWRRBBRR', 'WB'))  # 2
-print(Solution().findMinStep('RBYYBBRRB', 'YRBGB'))  # 3
