@@ -1,10 +1,12 @@
 class Solution:
     def checkSubarraySum(self, nums: List[int], k: int) -> bool:
-        sums = [0]
-        for num in nums:
-            sums.append(sums[-1] + num)
-        for i in range(len(sums) - 2):
-            for j in range(i + 2, len(sums)):
-                if (sums[j] - sums[i]) == k or (k != 0 and (sums[j] - sums[i]) % k == 0):
-                    return True
+        curr_sum = 0
+        sum_map = {0: -1}
+        for i, num in enumerate(nums):
+            curr_sum += num
+            if k:
+                curr_sum %= k
+            if curr_sum in sum_map and i - sum_map[curr_sum] > 1:
+                return True
+            sum_map.setdefault(curr_sum, i)
         return False
