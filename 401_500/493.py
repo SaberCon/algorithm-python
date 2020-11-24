@@ -1,9 +1,26 @@
 class Solution:
     def reversePairs(self, nums: [int]) -> int:
-        for num in nums:
-            
+        def merge_sort(start, end):
+            if start >= end:
+                return 0
+            mid = (start + end) // 2
+            count = merge_sort(start, mid) + merge_sort(mid + 1, end)
 
+            j = mid + 1
+            for i in range(start, mid + 1):
+                while j <= end and nums[i] > 2 * nums[j]:
+                    count += mid - i + 1
+                    j += 1
 
-# Given an array nums, we call (i, j) an important reverse pair if i < j and nums[i] > 2*nums[j].
-print(Solution().reversePairs([1, 3, 2, 3, 1]))  # 2
-print(Solution().reversePairs([2, 4, 3, 5, 1]))  # 3
+            left, right = nums[start:mid + 1], nums[mid + 1:end + 1]
+            left_i, right_i = 0, 0
+            for i in range(start, end + 1):
+                if left_i >= len(left) or (right_i < len(right) and right[right_i] < left[left_i]):
+                    nums[i] = right[right_i]
+                    right_i += 1
+                else:
+                    nums[i] = left[left_i]
+                    left_i += 1
+            return count
+
+        return merge_sort(0, len(nums) - 1)
