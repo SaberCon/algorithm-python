@@ -1,26 +1,31 @@
 class Solution:
     def reversePairs(self, nums: [int]) -> int:
-        def merge_sort(start, end):
-            if start >= end:
-                return 0
-            mid = (start + end) // 2
-            count = merge_sort(start, mid) + merge_sort(mid + 1, end)
+        sorted_nums = sorted(nums, reverse=True)
+        bit = [0] * (len(nums) + 1)
 
-            j = mid + 1
-            for i in range(start, mid + 1):
-                while j <= end and nums[i] > 2 * nums[j]:
-                    count += mid - i + 1
-                    j += 1
+        def bit_add(n):
+            while n < len(bit):
+                bit[n] += 1
+                n += n & -n
 
-            left, right = nums[start:mid + 1], nums[mid + 1:end + 1]
-            left_i, right_i = 0, 0
-            for i in range(start, end + 1):
-                if left_i >= len(left) or (right_i < len(right) and right[right_i] < left[left_i]):
-                    nums[i] = right[right_i]
-                    right_i += 1
-                else:
-                    nums[i] = left[left_i]
-                    left_i += 1
-            return count
+        def bit_get(n):
+            ans = 0
+            while n > 0:
+                ans += bit[n]
+                n -= n & -n
+            return ans
 
-        return merge_sort(0, len(nums) - 1)
+        def binary_search(left, right, num):
+            if left == right - 1:
+                return left if sorted_nums[left] >= num else -1
+            mid = (left + right) // 2
+            if sorted_nums[mid] >= num:
+                return binary_search(mid, right, num)
+            else:
+                return binary_search(left, mid, num)
+
+        count = 0
+        for num in nums:
+            count += bit_get(binary_search(0, len(nums), 2 * num + 1) + 1)
+            bit_add(binary_search(0, len(nums), num) + 1)
+        return count
