@@ -1,13 +1,13 @@
 class Solution:
     def countSubstrings(self, s: str) -> int:
-        old_dp, dp = [0] * len(s), [1] * len(s)
-        old_palindrome, palindrome = [1] * len(s), [1] * len(s)
-        for i in range(1, len(s)):
-            new_dp = []
-            new_palindrome = []
-            for j in range(0, len(s) - i):
-                new_palindrome.append(1 if s[j] == s[j + i] and old_palindrome[j + 1] else 0)
-                new_dp.append(dp[j] + dp[j + 1] - old_dp[j + 1] + new_palindrome[-1])
-            old_dp, dp = dp, new_dp
-            old_palindrome, palindrome = palindrome, new_palindrome
-        return dp[0]
+        s = '^#' + '#'.join(s) + '#$'
+        dp = [0] * len(s)
+        ans = m = 0
+        for i in range(1, len(s) - 1):
+            dp[i] = 0 if m + dp[m] <= i else min(m + dp[m] - i, dp[2 * m - i])
+            while s[i + dp[i] + 1] == s[i - dp[i] - 1]:
+                dp[i] += 1
+            if i + dp[i] >= m + dp[m]:
+                m = i
+            ans += (dp[i] + 1) // 2
+        return ans
