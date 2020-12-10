@@ -8,4 +8,11 @@ class TreeNode:
 
 class Solution:
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
-        
+        stack = []
+        for num in nums + [2 ** 32]:
+            curr = TreeNode(num)
+            while stack and stack[-1].val < curr.val:
+                stack[-1].right = curr.left
+                curr.left = stack.pop()
+            stack.append(curr)
+        return stack[-1].left
