@@ -1,15 +1,12 @@
+from collections import defaultdict
+
+
 class Solution:
     def isPossible(self, nums: List[int]) -> bool:
-        seqs = []
-        for num in nums + [nums[-1] + 2]:
-            used = False
-            for s in reversed(seqs):
-                if num == s[-1] + 1:
-                    s.append(num)
-                    used = True
-                    break
-                if num > s[-1] + 1:
-                    break
-            if not used:
-                seqs.append([num])
-        return all(len(s) > 2 for s in seqs)
+        seqs = defaultdict(list)
+        for num in nums:
+            if seqs[num - 1]:
+                seqs[num].insert(0, seqs[num - 1].pop() + 1)
+            else:
+                seqs[num].append(1)
+        return all(all(s > 2 for s in seq) for seq in seqs.values())
