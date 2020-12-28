@@ -2,7 +2,6 @@ import bisect
 
 
 class RangeModule:
-
     def __init__(self):
         self.ranges = []
 
@@ -14,21 +13,18 @@ class RangeModule:
         self.ranges[i:j + 1] = [(left, right)]
 
     def queryRange(self, left: int, right: int) -> bool:
-        i = bisect.bisect_left(self.ranges, (left, float('inf')))
-        if i:
-            i -= 1
-        return (bool(self.ranges) and
-                self.ranges[i][0] <= left and
-                right <= self.ranges[i][1])
+        i = bisect.bisect_left(self.ranges, (left, float('inf'))) - 1
+        return i >= 0 and right <= self.ranges[i][1]
 
     def removeRange(self, left: int, right: int) -> None:
         i, j = self._bounds(left, right)
+        if i > j:
+            return
         merge = []
-        for k in range(i, j + 1):
-            if self.ranges[k][0] < left:
-                merge.append((self.ranges[k][0], left))
-            if right < self.ranges[k][1]:
-                merge.append((right, self.ranges[k][1]))
+        if self.ranges[i][0] < left:
+            merge.append((self.ranges[i][0], left))
+        if self.ranges[j][1] > right:
+            merge.append((right, self.ranges[j][1]))
         self.ranges[i:j + 1] = merge
 
     def _bounds(self, left, right):
