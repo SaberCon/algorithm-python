@@ -69,16 +69,15 @@ class Solution:
         for left, size in positions:
             coords.add(left)
             coords.add(left + size - 1)
-        index = {x: i for i, x in enumerate(sorted(coords))}
+        indices = {x: i for i, x in enumerate(sorted(coords))}
 
-        tree = SegmentTree(len(index), max, max)
+        tree = SegmentTree(len(indices), max, max)
         best = 0
         ans = []
         for left, size in positions:
-            L, R = index[left], index[left + size - 1]
+            L, R = indices[left], indices[left + size - 1]
             h = tree.query(L, R) + size
             tree.update(L, R, h)
             best = max(best, h)
             ans.append(best)
-
         return ans
