@@ -5,8 +5,7 @@ class Solution:
         queue = [(''.join(''.join(map(str, r)) for r in board), 0)]
         seen = set()
         while queue:
-            curr, count = queue[0]
-            del queue[0]
+            curr, count = queue.pop(0)
             if curr == target:
                 return count
             seen.add(curr)
