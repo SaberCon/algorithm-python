@@ -1,19 +1,14 @@
 class Solution:
     def canTransform(self, start: str, end: str) -> bool:
-        size = len(start)
-        i = j = 0
-        while True:
-            while i < size and start[i] == 'X':
-                i += 1
-            while j < size and end[j] == 'X':
-                j += 1
-            if i == size or j == size:
-                return i == size and j == size
-            if start[i] != end[j]:
+        start = [(c, i) for i, c in enumerate(start) if c != 'X']
+        end = [(c, i) for i, c in enumerate(end) if c != 'X']
+        if len(start) != len(end):
+            return False
+        for (sc, si), (ec, ei) in zip(start, end):
+            if sc != ec:
                 return False
-            if start[i] == 'L' and i < j:
+            if sc == 'L' and si < ei:
                 return False
-            if start[i] == 'R' and i > j:
+            if sc == 'R' and si > ei:
                 return False
-            i += 1
-            j += 1
+        return True
