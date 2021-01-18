@@ -6,4 +6,3 @@ class Solution:
             var = part.strip('()')
             if var in variables:
                 parts[i] = part.replace(var, str(variables[var]))
-
