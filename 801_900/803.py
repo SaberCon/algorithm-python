@@ -1,2 +1,2 @@
 class Solution:
-    def hitBricks(self, grid: List[List[int]], hits: List[List[int]]) -> List[int]:
+    def hitBricks(self, grid: [[int]], hits: [[int]]) -> [int]:
