@@ -7,7 +7,7 @@ class Solution:
         for i, route in enumerate(routes):
             for stop in route:
                 stops[stop].append(i)
-        seen_bus, seen_stop = set(), {S}
+        seen_bus = set()
         queue = [(S, 0)]
         while queue:
             stop, count = queue.pop(0)
@@ -18,8 +18,5 @@ class Solution:
                     continue
                 seen_bus.add(bus)
                 for nex in routes[bus]:
-                    if nex in seen_stop:
-                        continue
-                    seen_stop.add(nex)
                     queue.append((nex, count + 1))
         return -1
