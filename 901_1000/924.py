@@ -2,7 +2,7 @@ from collections import defaultdict, Counter
 
 
 class Solution:
-    def minMalwareSpread(self, graph: [[int]], initial: [int]) -> int:
+    def minMalwareSpread(self, graph: List[List[int]], initial: List[int]) -> int:
         N = len(graph)
         initial.sort()
         connection = defaultdict(set)
