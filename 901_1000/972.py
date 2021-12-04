@@ -4,7 +4,7 @@ class Solution:
             parts = number.split('.')
             integer, decimal = int(parts[0]), (parts[1] if len(parts) > 1 and parts[1] else '0')
             parts = decimal[:-1].split('(') if '(' in decimal else [decimal, '0']
-            decimal = parts[0] + parts[1] * 4
+            decimal = parts[0] + parts[1] * 8
             non_repeat = int(decimal[:4])
             repeat_size = 1 if len(set(parts[1])) == 1 else len(parts[1])
             if repeat_size == 2:
