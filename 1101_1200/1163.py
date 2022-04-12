@@ -8,7 +8,7 @@ class Solution:
                     j += k + 1
                     break
                 if s[j + k] > s[i + k]:
-                    i = max(j, j + k - k % (j - i))
+                    i = j + k - k % (j - i)
                     j = i + 1
                     break
         return s[i:]
