@@ -7,16 +7,22 @@ class ListNode:
 
 class Solution:
     def removeZeroSumSublists(self, head: ListNode) -> ListNode:
-        nodes = [ListNode(next=head)]
-        while head:
-            total = 0
-            for i in range(len(nodes) - 1, -1, -1):
-                if total + head.val == 0:
-                    nodes = nodes[:i + 1]
-                    nodes[-1].next = head.next
-                    break
-                total += nodes[i].val
-            else:
-                nodes.append(head)
-            head = head.next
-        return nodes[0].next
+        dummy = ListNode(next=head)
+        sum_node = {}
+
+        total = 0
+        node = dummy
+        while node:
+            total += node.val
+            sum_node[total] = node
+            node = node.next
+
+        total = 0
+        node = dummy
+        while node:
+            total += node.val
+            if total in sum_node:
+                node.next = sum_node[total].next
+            node = node.next
+
+        return dummy.next
